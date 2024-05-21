@@ -12,7 +12,6 @@ func (app *application) routes() http.Handler {
 
 	mux.HandleFunc("POST /register", app.registerUser)
 	mux.HandleFunc("POST /login", app.loginUser)
-	mux.HandleFunc("POST /fill_tables", app.fillFeatureAndTags)
 	mux.Handle("/swagger/", httpSwagger.WrapHandler)
 
 	//dynamic := alice.New(app.authenticate)

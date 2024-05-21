@@ -18,14 +18,18 @@ type Content struct {
 	URL   string `json:"url" example:"some_url"`
 }
 
+func NewContent(Title, Text, URL string) *Content {
+	return &Content{Title: Title, Text: Text, URL: URL}
+}
+
 type Banner struct {
 	ID        int        `json:"banner_id" `
-	TagID     []int      `json:"tag_ids" example:"0"`
+	TagIDs    []int      `json:"tag_ids" example:"0"`
 	FeatureID int        `json:"feature_id" example:"0"`
-	Content   Content    `json:"content"`
+	Content   *Content   `json:"content"`
 	IsActive  *bool      `json:"is_active" example:"true"`
-	CreatedAt *time.Time `json:"created_at,omitempty" example:"2024-04-14"`
-	UpdatedAt *time.Time `json:"updated_at,omitempty" example:"2024-04-14"`
+	CreatedAt *time.Time `json:"created_at,omitempty" `
+	UpdatedAt *time.Time `json:"updated_at,omitempty" `
 }
 
 func (m *BannerModel) Get(tagId int, featureId int) (*Banner, error) {
@@ -35,9 +39,10 @@ func (m *BannerModel) Get(tagId int, featureId int) (*Banner, error) {
                                join tags t on t.id = bt.tag_id
 								where b.feature_id = $1 and tag_id = $2`
 	b := Banner{}
+	content := Content{}
 	row := m.DB.QueryRow(stmt, featureId, tagId)
 
-	err := row.Scan(&b.Content.Title, &b.Content.Text, &b.Content.URL, &b.IsActive)
+	err := row.Scan(&content.Title, &content.Text, &content.URL, &b.IsActive)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, ErrNoRecord
@@ -45,6 +50,7 @@ func (m *BannerModel) Get(tagId int, featureId int) (*Banner, error) {
 			return nil, err
 		}
 	}
+	b.Content = &content
 	return &b, nil
 }
 
@@ -69,11 +75,7 @@ func (m *BannerModel) GetAll(tagID, featureID, limit, offset int) (*[]Banner, er
 								else 0
 								END`
 
-	capacity := 10
-	if limit >= 0 {
-		capacity = limit
-	}
-	banners := make([]Banner, 0, capacity)
+	banners := make([]Banner, 0, limit)
 	rows, err := m.DB.Query(stmt, tagID, featureID, limit, offset)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
@@ -91,7 +93,7 @@ func (m *BannerModel) GetAll(tagID, featureID, limit, offset int) (*[]Banner, er
 			return nil, err
 		}
 
-		b.TagID, err = m.getIDs(b.ID)
+		b.TagIDs, err = m.getIDs(b.ID)
 		if err != nil {
 			return nil, err
 		}

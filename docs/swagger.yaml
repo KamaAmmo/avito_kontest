@@ -7,7 +7,6 @@ definitions:
       content:
         $ref: '#/definitions/avito_app_internal_models.Content'
       created_at:
-        example: "2024-04-14"
         type: string
       feature_id:
         example: 0
@@ -22,7 +21,6 @@ definitions:
           type: integer
         type: array
       updated_at:
-        example: "2024-04-14"
         type: string
     type: object
   avito_app_internal_models.Content:
@@ -189,19 +187,6 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: patchBanner
-  /fill_tables:
-    post:
-      description: fill tables features and tags 1000 rows
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: integer
-        "500":
-          description: Internal server error
-      summary: fillTables
-      tags:
-      - preparing
   /login:
     post:
       consumes:

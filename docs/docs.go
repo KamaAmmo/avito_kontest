@@ -211,26 +211,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/fill_tables": {
-            "post": {
-                "description": "fill tables features and tags 1000 rows",
-                "tags": [
-                    "preparing"
-                ],
-                "summary": "fillTables",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
         "/login": {
             "post": {
                 "description": "login existing user",
@@ -369,8 +349,7 @@ const docTemplate = `{
                     "$ref": "#/definitions/avito_app_internal_models.Content"
                 },
                 "created_at": {
-                    "type": "string",
-                    "example": "2024-04-14"
+                    "type": "string"
                 },
                 "feature_id": {
                     "type": "integer",
@@ -390,8 +369,7 @@ const docTemplate = `{
                     ]
                 },
                 "updated_at": {
-                    "type": "string",
-                    "example": "2024-04-14"
+                    "type": "string"
                 }
             }
         },

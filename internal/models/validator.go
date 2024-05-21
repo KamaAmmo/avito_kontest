@@ -1,13 +1,13 @@
 package models
 
-func (b Banner) Validate() error {
-	for _, id := range b.TagID {
+func (b Banner) Validate() bool {
+	if b.Content == nil || b.FeatureID < 1 {
+		return false
+	}
+	for _, id := range b.TagIDs {
 		if id < 1 {
-			return ErrInvalidData
+			return false
 		}
 	}
-	if b.Content.Title == "" || b.Content.Text == "" || b.Content.URL == "" || b.FeatureID < 1 {
-		return ErrInvalidData
-	}
-	return nil
+	return true
 }
