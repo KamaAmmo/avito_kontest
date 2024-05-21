@@ -15,10 +15,12 @@ func (app *application) routes() http.Handler {
 	mux.HandleFunc("POST /fill_tables", app.fillFeatureAndTags)
 	mux.Handle("/swagger/", httpSwagger.WrapHandler)
 
-	dynamic := alice.New(app.authenticate)
+	//dynamic := alice.New(app.authenticate)
+	dynamic := alice.New()
 	mux.Handle("GET /user_banner", dynamic.ThenFunc(app.getBanner))
 
-	protected := dynamic.Append(app.authorization)
+	//protected := dynamic.Append(app.authorization)
+	protected := dynamic
 	mux.Handle("GET /banner", protected.ThenFunc(app.getAllBanners))
 	mux.Handle("POST /banner", protected.ThenFunc(app.createBanner))
 	mux.Handle("DELETE /banner/{id}", protected.ThenFunc(app.deleteBanner))

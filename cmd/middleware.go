@@ -65,7 +65,7 @@ func (app *application) authenticate(next http.Handler) http.Handler {
 			if errors.Is(err, jwt.ErrSignatureInvalid) {
 				app.clientError(w, http.StatusUnauthorized)
 			} else {
-				app.clientError(w, http.StatusBadRequest)
+				app.clientError(w, http.StatusConflict)
 			}
 			return
 		}

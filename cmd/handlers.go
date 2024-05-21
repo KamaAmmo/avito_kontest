@@ -370,24 +370,3 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write(data)
 }
-
-// @Summary fillTables
-// @Description fill tables features and tags 1000 rows
-// @Tags preparing
-// @success 200 {integer} integer
-// @Failure 500 "Internal server error"
-// @Router /fill_tables [post]
-func (app *application) fillFeatureAndTags(w http.ResponseWriter, r *http.Request) {
-	err := fillTable("features", app.banners.DB)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-	err = fillTable("tags", app.banners.DB)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
-}

@@ -25,7 +25,7 @@ type User struct {
 }
 
 func (s *UserModel) Insert(name, pass, role string) error {
-	stmt := `INSERT INTO users (name, password, role) VALUES($1, $2, $3)`
+	stmt := `INSERT INTO public.users (name, password, role) VALUES($1, $2, $3)`
 
 	hashedPass, err := bcrypt.GenerateFromPassword([]byte(pass), 12)
 	if err != nil {

@@ -117,7 +117,8 @@ func (m *BannerModel) Delete(id int) error {
 }
 
 func (m *BannerModel) Create(b Banner) (int, error) {
-	stmt := `INSERT INTO banners (title, text, url, visible, feature_id) VALUES ($1, $2, $3, $4, $5) RETURNING id`
+	stmt := `INSERT INTO banners (title, text, url, visible, feature_id, created_at, updated_at) 
+				VALUES ($1, $2, $3, $4, $5, current_timestamp, current_timestamp) RETURNING id`
 	row := m.DB.QueryRow(stmt, b.Content.Title, b.Content.Text, b.Content.URL, *b.IsActive, b.FeatureID)
 	var insertedID int
 	err := row.Scan(&insertedID)
